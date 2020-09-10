@@ -3,6 +3,7 @@ package com.master.basedatossqlite;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.DashPathEffect;
 import android.graphics.RegionIterator;
@@ -106,8 +107,116 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase BaseDatos = admin.getWritableDatabase();
 
-        
+        //Recuperamos el valor con el que se buscara nuestros valores
+        String codigo = TXTcodigo.getText().toString();
 
+        //Creamos una validacion para que el usuario no deje este campo vacio
+        //Al momento de buscar el producto
+        if (!codigo.isEmpty()){
+            Cursor fila = BaseDatos.rawQuery("Select descripcion, precio from Articulos where codigo =" + codigo, null);
+
+            // Creamos una estructura condicional que nos retorne si es verdadera, si esta encuentra
+            //Datos dentro de nuestra tabla
+            if (fila.moveToFirst()){
+                TXTdescripcion.setText(fila.getString(0));
+                TXTprecio.setText(fila.getString(1));
+
+                //Cerramos nuestra base de datos
+                BaseDatos.close();
+            }else{
+                Toast.makeText(this, "No existe el articulo", Toast.LENGTH_SHORT).show();
+
+                //Volve,os a cerrar nuestra base de datos ya que en caso de que
+                //No se cumpla la condicio se ejecuta esta otra por lo tanto
+                // si no la cerramos quedaria abierta
+                BaseDatos.close();
+            }
+        }else {
+            Toast.makeText(this, "Debes ingresar el codigo del articulo", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    //Este es el metodo para eliminar productos o articulos
+
+    public void Eliminar(View view){
+        AdminSQLiteOpenHelper admi = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
+        SQLiteDatabase BaseDatos = admi.getWritableDatabase();
+
+        // Recuperamos el valor o el dato con el que identificaremos el producto
+        // O articulo que se desea eliminar de la base de datos
+
+        String codigo = TXTcodigo.getText().toString();
+
+        //Validamos el campo
+        if(!codigo.isEmpty()){
+            int cantidad = BaseDatos.delete("Articulos", "codigo= " + codigo, null);
+
+            //Cerramos nuestra base de datos
+            BaseDatos.close();
+
+            //Limpiamos los campos
+
+            TXTcodigo.setText("");
+            TXTdescripcion.setText("");
+            TXTprecio.setText("");
+
+            // Creamos otra estructura condicional para poder agregar los
+            //  Dos mensajes
+            if(cantidad == 1){
+                Toast.makeText(this, "El articulo eliminado exitosamente", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "El articulo no existe", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(this, "Debes ingresar el codigo del articulo", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Creamos el metodo modificar
+
+    public void Modificar(View view){
+        AdminSQLiteOpenHelper admi = new  AdminSQLiteOpenHelper(this, "administracion", null,  1);
+        SQLiteDatabase BaseDatos = admi.getWritableDatabase();
+
+        //Creamos tres variables donde se guardara los que el usuario haya modificado
+
+        String codigo = TXTcodigo.getText().toString();
+        String descripcion = TXTdescripcion.getText().toString();
+        String precio = TXTprecio.getText().toString();
+
+        //creamos una estructura condicional para validar los compos
+
+        // le decimos que si la condicion es completamente diferente a vacio si la condicion se cumple
+        if(!codigo.isEmpty() && !descripcion.isEmpty() && !precio.isEmpty()){
+
+            //creamos un objeto de la clase contentvalues
+            ContentValues registro = new ContentValues();
+
+            //ahora guardaremos dentro de nuestro registro las modificaciones que el usuario a realizado
+            registro.put("codigo", codigo);
+            registro.put("descripcion", descripcion);
+            registro.put("precio", precio);
+
+            // ahora los guardaremos dentro de nuestra base de datos
+
+            int cantidad = BaseDatos.update("Articulos", registro, "codigo=" + codigo, null);
+
+            //cerramos nuestra base de datos
+            BaseDatos.close();
+
+            //Creamos una estructura condicional para indicarle al usuario que el articulo se modificio
+            // o el articulo que quiere o trata de moficiar no ixiste
+
+            if(cantidad == 1){
+                Toast.makeText(this, "Articulo modificado exitosamente", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "El articulo no existe", Toast.LENGTH_SHORT).show();
+            }
+
+        }else{
+            Toast.makeText(this, "Debes llenar todos los campos", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

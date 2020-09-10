@@ -50,16 +50,18 @@
         android:id="@+id/btnBuscar"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginTop="270dp"
+        android:onClick="Buscar"
         android:text="@string/btnBuscar" />
 
     <Button
         android:id="@+id/btnEliminar"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginTop="320dp"
+        android:onClick="Eliminar"
         android:text="@string/btnEliminar" />
 
 
@@ -67,7 +69,8 @@
         android:id="@+id/btnModificar"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="370dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginTop="370dp"
+        android:onClick="Modificar"
         android:text="@string/btnModificar" />
 </RelativeLayout>
