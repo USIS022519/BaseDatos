@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BaseDatosSqLite</string>
+    <string name="txtcodigo">Codigo Producto</string>
+    <string name="txtdescripcion">Descripcion</string>
+    <string name="txtprecio">Precio</string>
+    <string name="btnRegistrar">Registrar Producto</string>
+    <string name="btnBuscar">Bucar Producto</string>
+    <string name="btnEliminar">Eliminar Producto</string>
+    <string name="btnModificar">Modificar Producto</string>
+
+</resources>
